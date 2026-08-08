@@ -125,7 +125,7 @@
             display: flex;
             align-items: center;
             margin-bottom: 10px;
-            font-size: 28px;
+            font-size: 32px;
         }
 
         .task-item::before {
@@ -140,7 +140,7 @@
             font-family: 'Amatica SC', sans-serif;
         }
         .fc-list-event-title, .fc-event-title {
-            font-size: 24px;
+            font-size: 32px;
         }
         .fc-list-day-cushion {
             background-color: rgba(24, 61, 30, 0.1) !important;
@@ -305,20 +305,32 @@
                 })
                 .catch(err => console.log('Tasks not loaded yet:', err));
 
-            function renderTasks(elementId, taskArray) {
-                const container = document.getElementById(elementId);
-                if (!taskArray || taskArray.length === 0) {
-                    container.innerHTML = '<li class="task-item">All done!</li>';
+            // Helper function to render lists and limit them to 8 items max
+            function renderTasks(elementId, items) {
+                const listElement = document.getElementById(elementId);
+                if (!items || items.length === 0) {
+                    listElement.innerHTML = '<li class="task-item">All done!</li>';
                     return;
                 }
-                container.innerHTML = '';
-                taskArray.forEach(task => {
-                    // Only display uncompleted tasks on the passive monitor
-                    if (!task.completed) {
-                        container.innerHTML += `<li class="task-item">${task.title}</li>`;
-                    }
+
+                // .slice(0, 8) ensures it only takes the first 8 items
+                const limitedItems = items.slice(0, 8);
+                
+                let html = '';
+                limitedItems.forEach(task => {
+                    html += `<li class="task-item">${task}</li>`;
                 });
+                listElement.innerHTML = html;
             }
+
+            // Fetch both chores and to-do items from your Google Apps Script
+            fetch(`${webAppUrl}?type=tasks`)
+                .then(response => response.json())
+                .then(data => {
+                    renderTasks('chores-list', data.chores);
+                    renderTasks('todo-list', data.tasks);
+                })
+                .catch(err => console.log('Tasks not loaded yet:', err));
         });
     </script>
 </body>
