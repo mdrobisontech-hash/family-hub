@@ -79,25 +79,27 @@
         }
 
         /* Island Mapping */
-        .card-weather {
+        .card-today {
             grid-column: 1 / 2;
-            grid-row: 1 / 2;
-            text-align: center;
+            grid-row: 1 / 3;
         }
 
+        /* Column 2: Chores on top, Weather underneath */
         .card-chores {
             grid-column: 2 / 3;
             grid-row: 1 / 2;
         }
 
+        .card-weather {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            text-align: center;
+        }
+
+        /* Column 3: To Do on top, Menu underneath */
         .card-tasks {
             grid-column: 3 / 4;
             grid-row: 1 / 2;
-        }
-
-        .card-today {
-            grid-column: 1 / 2;
-            grid-row: 2 / 3;
         }
 
         .card-menu {
@@ -105,13 +107,13 @@
             grid-row: 2 / 3;
         }
 
-        /* Bottom Horizontal 7-Day Strip */
+        /* Row 3: Full-Width Bottom Strip (Next 7 Days) */
         .card-upcoming {
             grid-column: 1 / 4;
             grid-row: 3 / 4;
             margin-top: 5px;
         }
-
+        
         /* Task & Chore Lists (No Checkbox Borders for Passive Viewing) */
         .task-list {
             list-style: none;
@@ -208,27 +210,44 @@
 
             //Weather API Call
             const weatherApiKey = 'd30ad5698b761df2e8aa71f1cd86a4ce';
-            const city = 'Kuna,US'; // Change city/state if needed
+            const lat = '43.4918'; // Latitude for Kuna, ID
+            const lon = '-116.4201'; // Longitude for Kuna, ID
 
-            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${weatherApiKey}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('weather-widget').innerHTML = `
-                        <div style="font-size: 55px; font-weight: bold; line-height: 1.1;">
-                            ${Math.round(data.main.temp)}°F
+            // Fetch Weather and Air Quality simultaneously
+            Promise.all([
+                fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${weatherApiKey}`).then(res => res.json()),
+                fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${weatherApiKey}`).then(res => res.json())
+            ])
+            .then(([weatherData, airData]) => {
+                const iconCode = weatherData.weather[0].icon;
+                const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+                
+                // Convert AQI number (1-5) to a readable label
+                const aqiLevels = ["Good", "Fair", "Moderate", "Poor", "Very Poor"];
+                const aqiText = aqiLevels[airData.list[0].main.aqi - 1] || "Unknown";
+
+                document.getElementById('weather-widget').innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+                        <img src="${iconUrl}" alt="Weather Icon" style="width: 60px; height: 60px; filter: contrast(0.8) sepia(1) hue-rotate(50deg) saturate(3);">
+                        <div style="font-size: 45px; font-weight: bold; line-height: 1.1;">
+                            ${Math.round(weatherData.main.temp)}°F
                         </div>
-                        <div style="font-size: 30px; text-transform: capitalize; margin-bottom: 5px;">
-                            ${data.weather[0].description}
-                        </div>
-                        <div style="font-size: 22px; opacity: 0.85;">
-                            Humidity: ${data.main.humidity}% | Wind: ${Math.round(data.wind.speed)} mph
-                        </div>
-                    `;
-                })
-                .catch(err => {
-                    document.getElementById('weather-widget').innerHTML = '<p>Weather unavailable</p>';
-                    console.log('Weather fetch error:', err);
-                });
+                    </div>
+                    <div style="font-size: 24px; text-transform: capitalize; margin-top: -2px;">
+                        ${weatherData.weather[0].description}
+                    </div>
+                    <div style="font-size: 18px; opacity: 0.85; margin-top: 4px;">
+                        Humidity: ${weatherData.main.humidity}% | Wind: ${Math.round(weatherData.wind.speed)} mph
+                    </div>
+                    <div style="font-size: 18px; opacity: 0.85; margin-top: 2px;">
+                        Air Quality: <strong>${aqiText}</strong>
+                    </div>
+                `;
+            })
+            .catch(err => {
+                document.getElementById('weather-widget').innerHTML = '<p>Weather unavailable</p>';
+                console.log('Weather fetch error:', err);
+            });
 
             // Your Google Apps Script Web App URL
             const webAppUrl = 'https://script.google.com/macros/s/AKfycbxTiZjej-RA7nje7-UnxUNDtZ_uexou-c56DQ10sFKZQHmU0VrK5u2QhDvvTwCoRmCq/exec';
