@@ -69,6 +69,28 @@
             backdrop-filter: blur(5px);
         }
 
+        /* Hide the day heading (e.g., "Saturday") in listDay views */
+        .fc-list-day {
+            display: none !important;
+        }
+
+        /* Remove the background tint and borders from the list table container */
+        .fc-list, .fc-list-table, .fc-list-stage, .fc-scroller {
+            background: transparent !important;
+            border: none !important;
+        }
+
+        /* Remove row backgrounds and borders for individual events */
+        .fc-list-item {
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .fc-list-item td {
+            background: transparent !important;
+            border-color: rgba(24, 61, 30, 0.15) !important; /* Subtle divider if wanted, or use 'none' */
+        }
+
         .card h2 {
             margin: 0 0 12px 0;
             font-family: 'Sacramento', cursive;
