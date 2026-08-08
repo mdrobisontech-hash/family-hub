@@ -141,6 +141,13 @@
             list-style: none;
             padding: 0;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            
+            /* Turns the list into a two-column layout */
+            columns: 2; 
+            column-gap: 20px;
         }
 
         .task-item {
@@ -319,46 +326,35 @@
             });
             calToday.render();
 
-            // 5. Fetch Tasks & Chores from Apps Script Web App
-            fetch(`${webAppUrl}?type=tasks`)
-                .then(response => response.json())
-                .then(data => {
-                    renderTasks('chores-list', data.chores);
-                    renderTasks('todo-list', data.tasks);
-                })
-                .catch(err => console.log('Tasks not loaded yet:', err));
+           // 5. Fetch Tasks & Chores from Apps Script Web App (Run once)
+        fetch(`${webAppUrl}?type=tasks`)
+            .then(response => response.json())
+            .then(data => {
+                renderTasks('chores-list', data.chores);
+                renderTasks('todo-list', data.tasks);
+            })
+            .catch(err => console.log('Tasks not loaded yet:', err));
 
-            // Helper function to render lists and limit them to 8 items max
-            function renderTasks(elementId, items) {
-                const listElement = document.getElementById(elementId);
-                if (!items || items.length === 0) {
-                    listElement.innerHTML = '<li class="task-item">All done!</li>';
-                    return;
-                }
-
-                const limitedItems = items.slice(0, 8);
-                
-                let html = '';
-                limitedItems.forEach(task => {
-                    // This explicitly checks what property your task object uses
-                    const taskText = typeof task === 'object' && task !== null 
-                        ? (task.title || task.name || task.content || task.text || JSON.stringify(task)) 
-                        : task;
-                        
-                    html += `<li class="task-item">${taskText}</li>`;
-                });
-                listElement.innerHTML = html;
+        // Helper function to render lists and limit them
+        function renderTasks(elementId, items) {
+            const listElement = document.getElementById(elementId);
+            if (!items || items.length === 0) {
+                listElement.innerHTML = '<li class="task-item">All done!</li>';
+                return;
             }
 
-            // Fetch both chores and to-do items from your Google Apps Script
-            fetch(`${webAppUrl}?type=tasks`)
-                .then(response => response.json())
-                .then(data => {
-                    renderTasks('chores-list', data.chores);
-                    renderTasks('todo-list', data.tasks);
-                })
-                .catch(err => console.log('Tasks not loaded yet:', err));
-        });
+            const limitedItems = items.slice(0, 8);
+            
+            let html = '';
+            limitedItems.forEach(task => {
+                const taskText = typeof task === 'object' && task !== null 
+                    ? (task.title || task.name || task.content || task.text || JSON.stringify(task)) 
+                    : task;
+                    
+                html += `<li class="task-item">${taskText}</li>`;
+            });
+            listElement.innerHTML = html;
+        }
     </script>
 </body>
 </html>
