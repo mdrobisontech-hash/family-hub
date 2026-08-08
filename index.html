@@ -227,16 +227,13 @@
                 const aqiText = aqiLevels[airData.list[0].main.aqi - 1] || "Unknown";
 
                 document.getElementById('weather-widget').innerHTML = `
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
-                        <img src="${iconUrl}" alt="Weather Icon" style="width: 60px; height: 60px; filter: contrast(0.8) sepia(1) hue-rotate(50deg) saturate(3);">
-                        <div style="font-size: 45px; font-weight: bold; line-height: 1.1;">
-                            ${Math.round(weatherData.main.temp)}°F
-                        </div>
+                    <div style="font-size: 50px; font-weight: bold; line-height: 1.1; margin-top: 5px;">
+                        ${Math.round(weatherData.main.temp)}°F
                     </div>
-                    <div style="font-size: 24px; text-transform: capitalize; margin-top: -2px;">
+                    <div style="font-size: 24px; text-transform: capitalize; margin-top: 2px;">
                         ${weatherData.weather[0].description}
                     </div>
-                    <div style="font-size: 18px; opacity: 0.85; margin-top: 4px;">
+                    <div style="font-size: 18px; opacity: 0.85; margin-top: 6px;">
                         Humidity: ${weatherData.main.humidity}% | Wind: ${Math.round(weatherData.wind.speed)} mph
                     </div>
                     <div style="font-size: 18px; opacity: 0.85; margin-top: 2px;">
@@ -313,12 +310,16 @@
                     return;
                 }
 
-                // .slice(0, 8) ensures it only takes the first 8 items
                 const limitedItems = items.slice(0, 8);
                 
                 let html = '';
                 limitedItems.forEach(task => {
-                    html += `<li class="task-item">${task}</li>`;
+                    // This explicitly checks what property your task object uses
+                    const taskText = typeof task === 'object' && task !== null 
+                        ? (task.title || task.name || task.content || task.text || JSON.stringify(task)) 
+                        : task;
+                        
+                    html += `<li class="task-item">${taskText}</li>`;
                 });
                 listElement.innerHTML = html;
             }
