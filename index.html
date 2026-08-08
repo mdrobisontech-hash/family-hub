@@ -296,14 +296,17 @@
             });
             calUpcoming.render();
 
-            // 4. TONIGHT'S MENU (Today Only)
+           // 4. TONIGHT'S MENU (Today Only - Collapses when empty)
             var calElMenu = document.getElementById('calendar-menu');
             var calMenu = new FullCalendar.Calendar(calElMenu, {
                 initialView: 'listDay',
                 headerToolbar: false,
                 height: "auto",
                 events: '45ed446ae1f6ade64289ae9e489fb2cc607ec8c88e8872abe765f040b3312e6c@group.calendar.google.com',
-                eventColor: '#183D1E'
+                eventColor: '#183D1E',
+                noEventsContent: function() {
+                    return ''; // Returns nothing, so the empty space disappears entirely
+                }
             });
             calMenu.render();
 
