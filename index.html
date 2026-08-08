@@ -9,7 +9,7 @@
     <link href="https://fonts.cdnfonts.com/css/sacramento" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/amatica-sc?styles=50347" rel="stylesheet">
 
-    <style>
+<style>
         :root {
             --fc-page-bg-color: transparent;
             --fc-today-bg-color: #B1E1D8;
@@ -32,7 +32,7 @@
             background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
-            overflow: hidden; /* Prevents scrollbars on fixed wall displays */
+            overflow: auto; /* Switch to 'hidden' once you are done debugging */
         }
 
         /* Top Header / Live Date Display */
@@ -67,10 +67,12 @@
             padding: 18px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
             backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
         }
 
         .card h2 {
-            margin: 0 0 12px 0;
+            margin: 0 0 10px 0;
             font-family: 'Sacramento', cursive;
             font-size: 38px;
             text-align: center;
@@ -93,6 +95,8 @@
         .card-weather {
             grid-column: 2 / 3;
             grid-row: 2 / 3;
+            padding: 12px 18px; /* Shorter vertically */
+            justify-content: center;
             text-align: center;
         }
 
@@ -105,6 +109,8 @@
         .card-menu {
             grid-column: 3 / 4;
             grid-row: 2 / 3;
+            padding: 12px 18px; /* Shorter vertically */
+            justify-content: center;
         }
 
         /* Row 3: Full-Width Bottom Strip (Next 7 Days) */
@@ -114,25 +120,34 @@
             margin-top: 5px;
         }
         
-        /* Task & Chore Lists (No Checkbox Borders for Passive Viewing) */
+        /* Dynamic Task & Chore Lists (Expands when fewer items) */
         .task-list {
             list-style: none;
             padding: 0;
             margin: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around; /* Distributes items to fill vertical space */
         }
 
         .task-item {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
-            font-size: 32px;
+            font-size: clamp(26px, 2.2vw, 38px); /* Grows dynamically based on item count and screen size */
+            font-weight: bold;
         }
 
         .task-item::before {
             content: "•";
             color: var(--primary-dark);
-            font-size: 35px;
-            margin-right: 10px;
+            font-size: 1.3em;
+            margin-right: 12px;
+        }
+
+        /* Compact Weather & Menu text styling */
+        #weather-widget {
+            font-size: 18px;
         }
 
         /* FullCalendar Clean Overrides */
@@ -146,7 +161,6 @@
             background-color: rgba(24, 61, 30, 0.1) !important;
         }
     </style>
-</head>
 <body>
 
     <header>
