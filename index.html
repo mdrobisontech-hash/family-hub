@@ -261,8 +261,8 @@
                 { url: `${webAppUrl}?type=calendar&calId=a12d8095704a134b2d4b79fb45f027046ccf06e243eb73118c400c7e370aafc5@group.calendar.google.com&color=%2365A0A6` }
             ];
 
-              const menuEventSources = [
-                //Marie
+            const menuEventSources = [
+                //Menu
                 { url: `${webAppUrl}?type=calendar&calId=45ed446ae1f6ade64289ae9e489fb2cc607ec8c88e8872abe765f040b3312e6c@group.calendar.google.com&color=%23183D1E` },
             ];
 
@@ -287,8 +287,8 @@
             });
             calUpcoming.render();
 
-            // 2. TODAY'S SCHEDULE (Vertical List View - Today Only)
-            var calElToday = document.getElementById('calendar-today');
+            // 4. TODAY'S MENU (Vertical List View - Today Only)
+            var calElToday = document.getElementById('calendar-menu');
             var calToday = new FullCalendar.Calendar(calElToday, {
                 initialView: 'listDay',
                 headerToolbar: false, // No buttons/arrows
