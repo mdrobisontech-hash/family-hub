@@ -88,7 +88,7 @@
 
         .fc-list-item td {
             background: transparent !important;
-            border-color: rgba(24, 61, 30, 0.15) !important; /* Subtle divider if wanted, or use 'none' */
+            border-color: rgba(24, 61, 30, 0.15) !important;
         }
 
         .card h2 {
@@ -106,7 +106,6 @@
             grid-row: 1 / 3;
         }
 
-        /* Column 2: Chores on top, Weather underneath */
         .card-chores {
             grid-column: 2 / 3;
             grid-row: 1 / 2;
@@ -118,7 +117,6 @@
             text-align: center;
         }
 
-        /* Column 3: To Do on top, Menu underneath */
         .card-tasks {
             grid-column: 3 / 4;
             grid-row: 1 / 2;
@@ -129,14 +127,13 @@
             grid-row: 2 / 3;
         }
 
-        /* Row 3: Full-Width Bottom Strip (Next 7 Days) */
         .card-upcoming {
             grid-column: 1 / 4;
             grid-row: 3 / 4;
             margin-top: 5px;
         }
         
-        /* Task & Chore Lists (No Checkbox Borders for Passive Viewing) */
+        /* Task & Chore Lists: Two Columns */
         .task-list {
             list-style: none;
             padding: 0;
@@ -144,8 +141,6 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            
-            /* Turns the list into a two-column layout */
             columns: 2; 
             column-gap: 20px;
         }
@@ -155,6 +150,7 @@
             align-items: center;
             margin-bottom: 10px;
             font-size: 32px;
+            break-inside: avoid;
         }
 
         .task-item::before {
@@ -237,21 +233,17 @@
             }
             updateDate();
 
-            //Weather API Call
+            // Weather API Call
             const weatherApiKey = 'd30ad5698b761df2e8aa71f1cd86a4ce';
-            const lat = '43.4918'; // Latitude for Kuna, ID
-            const lon = '-116.4201'; // Longitude for Kuna, ID
+            const lat = '43.4918'; 
+            const lon = '-116.4201'; 
 
-            // Fetch Weather and Air Quality simultaneously
             Promise.all([
                 fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${weatherApiKey}`).then(res => res.json()),
                 fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${weatherApiKey}`).then(res => res.json())
             ])
             .then(([weatherData, airData]) => {
                 const iconCode = weatherData.weather[0].icon;
-                const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-                
-                // Convert AQI number (1-5) to a readable label
                 const aqiLevels = ["Good", "Fair", "Moderate", "Poor", "Very Poor"];
                 const aqiText = aqiLevels[airData.list[0].main.aqi - 1] || "Unknown";
 
@@ -278,83 +270,78 @@
             // Your Google Apps Script Web App URL
             const webAppUrl = 'https://script.google.com/macros/s/AKfycbxTiZjej-RA7nje7-UnxUNDtZ_uexou-c56DQ10sFKZQHmU0VrK5u2QhDvvTwCoRmCq/exec';
 
-            // Shared Family Event Sources (Color-Coded)
             const familyEventSources = [
-                //Marie
                 { url: `${webAppUrl}?type=calendar&calId=1cb9bcf8bd82c7503ec7f910d83ff2d06aa9ed95580e97d8b0aae5ec50af3e9c@group.calendar.google.com&color=%23183D1E` },
-                //Charlotte
                 { url: `${webAppUrl}?type=calendar&calId=e64b6e6c456bc5349128cf1ab464feadb466099291938151f50f6d77d5864ed2@group.calendar.google.com&color=%23FF7C80` },
-                //Esther
                 { url: `${webAppUrl}?type=calendar&calId=b758d003d52ad4a9d09f96056c7dcc3d7cbe82e628a53cd206286010c51c03af@group.calendar.google.com&color=%23FFCCCC` },
-                //William
                 { url: `${webAppUrl}?type=calendar&calId=a12d8095704a134b2d4b79fb45f027046ccf06e243eb73118c400c7e370aafc5@group.calendar.google.com&color=%2365A0A6` }
             ];
 
             const menuEventSources = [
-                //Menu
                 { url: `${webAppUrl}?type=calendar&calId=45ed446ae1f6ade64289ae9e489fb2cc607ec8c88e8872abe765f040b3312e6c@group.calendar.google.com&color=%23183D1E` },
             ];
 
-            // 2. TODAY'S SCHEDULE (Vertical List View - Today Only)
+            // 2. TODAY'S SCHEDULE
             var calElToday = document.getElementById('calendar-today');
             var calToday = new FullCalendar.Calendar(calElToday, {
                 initialView: 'listDay',
-                headerToolbar: false, // No buttons/arrows
+                headerToolbar: false,
                 height: "auto",
                 eventSources: familyEventSources
             });
             calToday.render();
 
-            // 3. UPCOMING THIS WEEK (Horizontal 7-Day Strip Across Bottom)
+            // 3. UPCOMING THIS WEEK (Fixed view name to 'dayGridWeek')
             var calElUpcoming = document.getElementById('calendar-upcoming');
             var calUpcoming = new FullCalendar.Calendar(calElUpcoming, {
-                initialView: 'dayGrid',
-                duration: { days: 7 }, // Shows exactly 7 columns horizontally
-                headerToolbar: false,  // No buttons/arrows
+                initialView: 'dayGridWeek',
+                duration: { days: 7 },
+                headerToolbar: false,
                 height: "auto",
                 eventSources: familyEventSources
             });
             calUpcoming.render();
 
-            // 4. TODAY'S MENU (Vertical List View - Today Only)
-            var calElToday = document.getElementById('calendar-menu');
-            var calToday = new FullCalendar.Calendar(calElToday, {
+            // 4. TODAY'S MENU (Fixed unique variable names: calElMenu & calMenu)
+            var calElMenu = document.getElementById('calendar-menu');
+            var calMenu = new FullCalendar.Calendar(calElMenu, {
                 initialView: 'listDay',
-                headerToolbar: false, // No buttons/arrows
+                headerToolbar: false,
                 height: "auto",
                 eventSources: menuEventSources
             });
-            calToday.render();
+            calMenu.render();
 
-           // 5. Fetch Tasks & Chores from Apps Script Web App (Run once)
-        fetch(`${webAppUrl}?type=tasks`)
-            .then(response => response.json())
-            .then(data => {
-                renderTasks('chores-list', data.chores);
-                renderTasks('todo-list', data.tasks);
-            })
-            .catch(err => console.log('Tasks not loaded yet:', err));
+            // 5. Fetch Tasks & Chores from Apps Script Web App
+            fetch(`${webAppUrl}?type=tasks`)
+                .then(response => response.json())
+                .then(data => {
+                    renderTasks('chores-list', data.chores);
+                    renderTasks('todo-list', data.tasks);
+                })
+                .catch(err => console.log('Tasks not loaded yet:', err));
 
-        // Helper function to render lists and limit them
-        function renderTasks(elementId, items) {
-            const listElement = document.getElementById(elementId);
-            if (!items || items.length === 0) {
-                listElement.innerHTML = '<li class="task-item">All done!</li>';
-                return;
+            // Helper function to render lists and limit them
+            function renderTasks(elementId, items) {
+                const listElement = document.getElementById(elementId);
+                if (!items || items.length === 0) {
+                    listElement.innerHTML = '<li class="task-item">All done!</li>';
+                    return;
+                }
+
+                const limitedItems = items.slice(0, 8);
+                
+                let html = '';
+                limitedItems.forEach(task => {
+                    const taskText = typeof task === 'object' && task !== null 
+                        ? (task.title || task.name || task.content || task.text || JSON.stringify(task)) 
+                        : task;
+                        
+                    html += `<li class="task-item">${taskText}</li>`;
+                });
+                listElement.innerHTML = html;
             }
-
-            const limitedItems = items.slice(0, 8);
-            
-            let html = '';
-            limitedItems.forEach(task => {
-                const taskText = typeof task === 'object' && task !== null 
-                    ? (task.title || task.name || task.content || task.text || JSON.stringify(task)) 
-                    : task;
-                    
-                html += `<li class="task-item">${taskText}</li>`;
-            });
-            listElement.innerHTML = html;
-        }
+        });
     </script>
 </body>
 </html>
