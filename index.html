@@ -352,9 +352,21 @@
                 listElement.innerHTML = html;
             }
 
-            // Auto-refresh the entire page every 5 minutes
+            // Background Auto-Refresh every 5 minutes (300,000 milliseconds)
             setInterval(function() {
-                location.reload();
+                // Fetch fresh tasks silently in the background
+                fetch(`${webAppUrl}?type=tasks`)
+                    .then(response => response.json())
+                    .then(data => {
+                        renderTasks('chores-list', data.chores);
+                        renderTasks('todo-list', data.tasks);
+                    })
+                    .catch(err => console.log('Background task refresh failed:', err));
+
+                // Silently refetch calendar events without clearing the UI blocks
+                if (typeof calToday !== 'undefined') calToday.refetchEvents();
+                if (typeof calUpcoming !== 'undefined') calUpcoming.refetchEvents();
+                if (typeof calMenu !== 'undefined') calMenu.refetchEvents();
             }, 300000);
         });
     </script>
