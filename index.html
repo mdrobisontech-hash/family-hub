@@ -141,8 +141,12 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+            
+            /* Two Column Fixes */
             columns: 2; 
             column-gap: 20px;
+            max-height: 250px; /* Constrains the height so items wrap into the second column */
+            overflow: hidden;  /* Keeps overflowing items contained */
         }
 
         .task-item {
