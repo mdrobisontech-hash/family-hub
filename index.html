@@ -138,15 +138,11 @@
             list-style: none;
             padding: 0;
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
             
-            /* Two Column Fixes */
+            /* Remove flex layout here so multi-columns work properly */
+            display: block; 
             columns: 2; 
             column-gap: 20px;
-            max-height: 250px; /* Constrains the height so items wrap into the second column */
-            overflow: hidden;  /* Keeps overflowing items contained */
         }
 
         .task-item {
@@ -154,9 +150,11 @@
             align-items: center;
             margin-bottom: 10px;
             font-size: 32px;
-            break-inside: avoid;
+            
+            /* Prevents individual items from getting awkwardly split across columns */
+            break-inside: avoid; 
+            -webkit-column-break-inside: avoid;
         }
-
         .task-item::before {
             content: "•";
             color: var(--primary-dark);
