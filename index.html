@@ -259,8 +259,7 @@
             ])
             .then(([weatherData, airData]) => {
                 const iconCode = weatherData.weather[0].icon;
-                const aqiLevels = ["Good", "Fair", "Moderate", "Poor", "Very Poor"];
-                const aqiText = aqiLevels[airData.list[0].main.aqi - 1] || "Unknown";
+                const aqiValue = airData.list[0].main.aqi; // Raw index (1-5)
 
                 document.getElementById('weather-widget').innerHTML = `
                     <div style="font-size: 50px; font-weight: bold; line-height: 1.1; margin-top: 5px;">
@@ -269,11 +268,8 @@
                     <div style="font-size: 24px; text-transform: capitalize; margin-top: 2px;">
                         ${weatherData.weather[0].description}
                     </div>
-                    <div style="font-size: 18px; opacity: 0.85; margin-top: 6px;">
-                        Humidity: ${weatherData.main.humidity}% | Wind: ${Math.round(weatherData.wind.speed)} mph
-                    </div>
-                    <div style="font-size: 18px; opacity: 0.85; margin-top: 2px;">
-                        Air Quality: <strong>${aqiText}</strong>
+                    <div style="font-size: 22px; opacity: 0.9; margin-top: 8px;">
+                        Humidity: ${weatherData.main.humidity}% | Wind: ${Math.round(weatherData.wind.speed)} mph | AQI: ${aqiValue}
                     </div>
                 `;
             })
