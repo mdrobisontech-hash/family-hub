@@ -248,18 +248,17 @@
             }
             updateDate();
 
-            // Weather API Call
+            // Weather & Air Quality API Calls (OpenWeather + Open-Meteo US AQI)
             const weatherApiKey = 'd30ad5698b761df2e8aa71f1cd86a4ce';
             const lat = '43.4918'; 
             const lon = '-116.4201'; 
 
             Promise.all([
                 fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${weatherApiKey}`).then(res => res.json()),
-                fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${weatherApiKey}`).then(res => res.json())
+                fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=us_aqi`).then(res => res.json())
             ])
-            .then(([weatherData, airData]) => {
-                const iconCode = weatherData.weather[0].icon;
-                const aqiValue = airData.list[0].main.aqi; // Raw index (1-5)
+            .then(([weatherData, aqiData]) => {
+                const usAqi = aqiData.current ? aqiData.current.us_aqi : "N/A";
 
                 document.getElementById('weather-widget').innerHTML = `
                     <div style="font-size: 50px; font-weight: bold; line-height: 1.1; margin-top: 5px;">
@@ -268,14 +267,14 @@
                     <div style="font-size: 24px; text-transform: capitalize; margin-top: 2px;">
                         ${weatherData.weather[0].description}
                     </div>
-                    <div style="font-size: 24px; opacity: 0.9; margin-top: 8px;">
-                        Humidity: ${weatherData.main.humidity}% | Wind: ${Math.round(weatherData.wind.speed)} mph | AQI: ${aqiValue}
+                    <div style="font-size: 22px; opacity: 0.9; margin-top: 8px;">
+                        Humidity: ${weatherData.main.humidity}% | Wind: ${Math.round(weatherData.wind.speed)} mph | AQI: ${usAqi}
                     </div>
                 `;
             })
             .catch(err => {
                 document.getElementById('weather-widget').innerHTML = '<p>Weather unavailable</p>';
-                console.log('Weather fetch error:', err);
+                console.log('Weather/AQI fetch error:', err);
             });
 
             // Your Google Apps Script Web App URL
@@ -302,7 +301,7 @@
             });
             calToday.render();
 
-            // 3. UPCOMING THIS WEEK (Fixed view name to 'dayGridWeek')
+            // 3. UPCOMING THIS WEEK
             var calElUpcoming = document.getElementById('calendar-upcoming');
             var calUpcoming = new FullCalendar.Calendar(calElUpcoming, {
                 initialView: 'dayGridWeek',
@@ -313,7 +312,7 @@
             });
             calUpcoming.render();
 
-            // 4. TODAY'S MENU (Fixed unique variable names: calElMenu & calMenu)
+            // 4. TODAY'S MENU
             var calElMenu = document.getElementById('calendar-menu');
             var calMenu = new FullCalendar.Calendar(calElMenu, {
                 initialView: 'listDay',
@@ -352,6 +351,11 @@
                 });
                 listElement.innerHTML = html;
             }
+
+            // Auto-refresh the entire page every 5 minutes
+            setInterval(function() {
+                location.reload();
+            }, 300000);
         });
     </script>
 </body>
