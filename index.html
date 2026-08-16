@@ -134,15 +134,23 @@
         }
         
         /* Task & Chore Lists: Two Columns */
+        /* Task Lists: To-Do stays 2 columns */
         .task-list {
             list-style: none;
             padding: 0;
             margin: 0;
-            
-            /* Remove flex layout here so multi-columns work properly */
             display: block; 
             columns: 2; 
             column-gap: 20px;
+        }
+
+        /* Chores List: Strictly 1 column */
+        .chores-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: block;
+            columns: 1;
         }
 
         .task-item {
@@ -150,8 +158,6 @@
             align-items: center;
             margin-bottom: 10px;
             font-size: 32px;
-            
-            /* Prevents individual items from getting awkwardly split across columns */
             break-inside: avoid; 
             -webkit-column-break-inside: avoid;
         }
@@ -161,7 +167,6 @@
             font-size: 35px;
             margin-right: 10px;
         }
-
         /* FullCalendar Clean Overrides */
         .fc {
             font-family: 'Amatica SC', sans-serif;
@@ -209,9 +214,10 @@
         </div>
 
         <!-- Middle-Center: Chores -->
+        <!-- Middle-Center: Chores -->
         <div class="card card-chores">
             <h2>Today's Chores</h2>
-            <ul class="task-list" id="chores-list">
+            <ul class="chores-list" id="chores-list">
                 <li class="task-item">Loading chores...</li>
             </ul>
         </div>
@@ -281,9 +287,16 @@
             const webAppUrl = 'https://script.google.com/macros/s/AKfycbxTiZjej-RA7nje7-UnxUNDtZ_uexou-c56DQ10sFKZQHmU0VrK5u2QhDvvTwCoRmCq/exec';
 
             const familyEventSources = [
+                //Marie
                 { url: `${webAppUrl}?type=calendar&calId=1cb9bcf8bd82c7503ec7f910d83ff2d06aa9ed95580e97d8b0aae5ec50af3e9c@group.calendar.google.com&color=%23183D1E` },
+                { url: `${webAppUrl}?type=calendar&calId=mariedtharp@gmail.com@group.calendar.google.com&color=%23183D1E` },
+                //David
+                { url: `${webAppUrl}?type=calendar&calId=mrdavidrobison@gmail.com@group.calendar.google.com&color=%23011b36` },
+                //Charlotte
                 { url: `${webAppUrl}?type=calendar&calId=e64b6e6c456bc5349128cf1ab464feadb466099291938151f50f6d77d5864ed2@group.calendar.google.com&color=%23FF7C80` },
-                { url: `${webAppUrl}?type=calendar&calId=b758d003d52ad4a9d09f96056c7dcc3d7cbe82e628a53cd206286010c51c03af@group.calendar.google.com&color=%23FFCCCC` },
+                //Esther
+                { url: `${webAppUrl}?type=calendar&calId=b758d003d52ad4a9d09f96056c7dcc3d7cbe82e628a53cd206286010c51c03af@group.calendar.google.com&color=%23a8469b` },
+                //William
                 { url: `${webAppUrl}?type=calendar&calId=a12d8095704a134b2d4b79fb45f027046ccf06e243eb73118c400c7e370aafc5@group.calendar.google.com&color=%2365A0A6` }
             ];
 
