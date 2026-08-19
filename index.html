@@ -161,7 +161,7 @@
         /* Increase size for Tonight's Menu */
         #calendar-menu .fc-list-event-title, 
         #calendar-menu .fc-list-item {
-            font-size: 35px !important; 
+            font-size: 50px !important; 
         }
 
         .card-tasks {
@@ -344,7 +344,8 @@
                     <div class="weather-container">
                         <div class="weather-temp">${Math.round(weatherData.main.temp)}°F</div>
                         <div class="weather-details">
-                            <div>${weatherData.weather[0].description} | Humidity: ${weatherData.main.humidity}%</div>
+                            <div>${weatherData.weather[0].description}</div>
+                            <div>Humidity: ${weatherData.main.humidity}%</div>
                             <div>Wind: ${Math.round(weatherData.wind.speed)} mph | AQI: ${usAqi}</div>
                         </div>
                         </div>
