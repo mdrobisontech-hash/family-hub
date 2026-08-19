@@ -246,6 +246,24 @@
             width: 100% !important;
             table-layout: fixed !important;
         }
+
+        /* Force All-Day events to stack cleanly without overlapping */
+        .card-upcoming .fc-daygrid-event-harness {
+            position: relative !important;
+            margin-bottom: 2px !important;
+        }
+
+        .card-upcoming .fc-daygrid-day-events {
+            position: relative !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        /* Ensure event text remains visible and doesn't get clipped */
+        .card-upcoming .fc-daygrid-event {
+            white-space: normal !important;
+            align-items: stretch !important;
+        }
     </style>
 </head>
 <body>
@@ -377,6 +395,8 @@
                 duration: { days: 7 },
                 headerToolbar: false,
                 height: "auto",
+                dayMaxEvents: false,
+                fixedWeekCount: false,
                 eventSources: familyEventSources
             });
             calUpcoming.render();
