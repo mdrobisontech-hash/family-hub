@@ -384,7 +384,13 @@
                 initialView: 'listDay',
                 headerToolbar: false,
                 height: "auto",
-                eventSources: familyEventSources
+                eventSources: familyEventSources,
+                eventTimeFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    omitZeroMinute: true,
+                    meridiem: false
+                }
             });
             calToday.render();
 
