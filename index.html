@@ -123,6 +123,18 @@
             font-size: 70px !important;
         }
 
+        /* Force FullCalendar list table cells to vertically center */
+        #calendar-today .fc-list-item td {
+            vertical-align: middle !important;
+        }
+
+        /* Center the event dot graphic specifically */
+        #calendar-today .fc-list-event-graphic {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            vertical-align: middle !important;
+        }
+
         .card-chores {
             grid-column: 2 / 3;
             grid-row: 1 / 2;
@@ -132,6 +144,7 @@
             grid-column: 2 / 3;
             grid-row: 2 / 3;
             text-align: center;
+            padding: 13px 18px !important;
         }
 
         /* Two-Column Weather Card Layout */
@@ -140,7 +153,7 @@
             align-items: center;
             justify-content: space-around;
             height: 100%;
-            padding-top: 0;
+            min-height: 125px;
         }
 
         .weather-temp {
@@ -161,7 +174,7 @@
         /* Increase size for Tonight's Menu */
         #calendar-menu .fc-list-event-title, 
         #calendar-menu .fc-list-item {
-            font-size: 50px !important; 
+            font-size: 40px !important; 
         }
 
         .card-tasks {
