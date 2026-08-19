@@ -274,19 +274,20 @@
             flex-direction: column !important;
         }
 
+/* Allow multi-line wrapping and align the dot with the first line of text */
+        .card-upcoming .fc-daygrid-event {
+            display: flex !important;
+            align-items: flex-start !important; 
+            white-space: normal !important;
+        }
+
         .card-upcoming .fc-daygrid-event-dot {
-            margin-right: 6px !important;
+            margin-top: 6px !important; /* Adjust this slightly up or down to align with the first text line */
             flex-shrink: 0;
         }
 
         .card-upcoming .fc-event-main {
-            display: flex;
-            align-items: center;
-        }
-
-        .card-upcoming .fc-daygrid-event {
-            white-space: flex !important;
-            align-items: center !important;
+            white-space: normal !important;
         }
     </style>
 </head>
