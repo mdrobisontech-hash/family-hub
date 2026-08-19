@@ -25,7 +25,7 @@
 
         body {
             margin: 0;
-            padding: 20px;
+            padding: 10px 20px 20px 20px;
             font-family: 'Amatica SC', sans-serif;
             font-size: 26px;
             color: var(--primary-dark);
@@ -34,17 +34,17 @@
             min-height: 100vh;
             overflow: hidden; /* Prevents scrollbars on fixed wall displays */
 
-            /* Perfect 50% Scaling Setup */
+            /* Perfect Scaling Setup */
             transform: scale(0.46);
             transform-origin: top left;
-            width: 217.4%; /* Compensates for the scale so it still spans the whole screen */
+            width: 217.4%; 
             height: 217.4%;
         }
 
         /* Top Header / Live Date Display */
         header {
-            margin-bottom: 15px;
-            padding: 0 10px;
+            margin-bottom: 10px;
+            padding: 0;
             text-align: center;
         }
 
@@ -70,7 +70,7 @@
             background: var(--mint-bg);
             border: 3px solid var(--card-border);
             border-radius: 20px;
-            padding: 18px;
+            padding: 12px 18px 18px 18px; /* Tighter top padding */
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
             backdrop-filter: blur(5px);
         }
@@ -98,7 +98,8 @@
         }
 
         .card h2 {
-            margin: 0 0 12px 0;
+            margin: 0 0 8px 0;
+            padding-top: 0;
             font-family: 'Sacramento', cursive;
             font-size: 38px;
             text-align: center;
@@ -115,10 +116,9 @@
         /* Increase size for Today's Schedule events */
         #calendar-today .fc-list-event-title, 
         #calendar-today .fc-list-event-time {
-            font-size: 50px !important; /* Adjust this larger (e.g. 46px or 50px) if needed */
+            font-size: 50px !important; 
         }
 
-        /* Ensure the event text rows have enough height to fit the larger font */
         #calendar-today .fc-list-item {
             font-size: 50px !important;
         }
@@ -140,11 +140,11 @@
             align-items: center;
             justify-content: space-around;
             height: 100%;
-            padding-top: 5px;
+            padding-top: 0;
         }
 
         .weather-temp {
-            font-size: 100px;
+            font-size: 85px;
             font-weight: bold;
             line-height: 1;
         }
@@ -175,7 +175,6 @@
         }
         
         /* Task & Chore Lists: Two Columns */
-        /* Task Lists: To-Do stays 2 columns */
         .task-list {
             list-style: none;
             padding: 0;
@@ -185,7 +184,6 @@
             column-gap: 20px;
         }
 
-        /* Chores List: Strictly 1 column */
         .chores-list {
             list-style: none;
             padding: 0;
@@ -208,6 +206,7 @@
             font-size: 35px;
             margin-right: 10px;
         }
+
         /* FullCalendar Clean Overrides */
         .fc {
             font-family: 'Amatica SC', sans-serif;
@@ -218,7 +217,7 @@
         .fc-list-day-cushion {
             background-color: rgba(24, 61, 30, 0.1) !important;
         }
-        /* Hide time, dots, and borders specifically for the Menu card */
+        
         #calendar-menu .fc-list-event-time,
         #calendar-menu .fc-list-event-dot {
             display: none !important;
@@ -227,12 +226,11 @@
             border: none !important;
             padding-left: 0 !important;
         }
-
         #calendar-menu .fc-list-table {
             border: none !important;
         }
 
-        /* Force Upcoming the Week to stretch across the full width of its container */
+        /* Upcoming Week Layout & Stacking */
         .card-upcoming .fc, 
         .card-upcoming .fc-view-harness, 
         .card-upcoming .fc-daygrid-body, 
@@ -240,14 +238,12 @@
             width: 100% !important;
         }
 
-        /* Ensure individual day columns stretch evenly */
         .card-upcoming .fc-col-header, 
         .card-upcoming .fc-scrollgrid-sync-table {
             width: 100% !important;
             table-layout: fixed !important;
         }
 
-        /* Force All-Day events to stack cleanly without overlapping */
         .card-upcoming .fc-daygrid-event-harness {
             position: relative !important;
             margin-bottom: 2px !important;
@@ -259,7 +255,6 @@
             flex-direction: column !important;
         }
 
-        /* Ensure event text remains visible and doesn't get clipped */
         .card-upcoming .fc-daygrid-event {
             white-space: normal !important;
             align-items: stretch !important;
@@ -287,7 +282,6 @@
             </div>
         </div>
 
-        <!-- Middle-Center: Chores -->
         <!-- Middle-Center: Chores -->
         <div class="card card-chores">
             <h2>Today's Chores</h2>
@@ -378,7 +372,7 @@
                 { url: `${webAppUrl}?type=calendar&calId=45ed446ae1f6ade64289ae9e489fb2cc607ec8c88e8872abe765f040b3312e6c@group.calendar.google.com&color=%23183D1E` },
             ];
 
-            // 2. TODAY'S SCHEDULE
+            // 2. TODAY'S SCHEDULE (With clean time format)
             var calElToday = document.getElementById('calendar-today');
             var calToday = new FullCalendar.Calendar(calElToday, {
                 initialView: 'listDay',
@@ -449,7 +443,6 @@
 
             // Background Auto-Refresh every 5 minutes (300,000 milliseconds)
             setInterval(function() {
-                // Fetch fresh tasks silently in the background
                 fetch(`${webAppUrl}?type=tasks`)
                     .then(response => response.json())
                     .then(data => {
@@ -458,7 +451,6 @@
                     })
                     .catch(err => console.log('Background task refresh failed:', err));
 
-                // Silently refetch calendar events without clearing the UI blocks
                 if (typeof calToday !== 'undefined') calToday.refetchEvents();
                 if (typeof calUpcoming !== 'undefined') calUpcoming.refetchEvents();
                 if (typeof calMenu !== 'undefined') calMenu.refetchEvents();
