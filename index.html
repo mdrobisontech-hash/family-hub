@@ -196,6 +196,21 @@
         #calendar-menu .fc-list-table {
             border: none !important;
         }
+
+        /* Force FullCalendar to stretch across the full width of its container */
+        .card-upcoming .fc, 
+        .card-upcoming .fc-view-harness, 
+        .card-upcoming .fc-daygrid-body, 
+        .card-upcoming table {
+            width: 100% !important;
+        }
+
+        /* Ensure individual day columns stretch evenly */
+        .card-upcoming .fc-col-header, 
+        .card-upcoming .fc-scrollgrid-sync-table {
+            width: 100% !important;
+            table-layout: fixed !important;
+        }
     </style>
 </head>
 <body>
