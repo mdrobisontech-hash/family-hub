@@ -107,10 +107,38 @@
             padding-bottom: 4px;
         }
 
-        /* Island Mapping */
+        /* Island Mapping (Weather & Menu Top, To Do & Chores Bottom) */
         .card-today {
             grid-column: 1 / 2;
             grid-row: 1 / 3;
+        }
+
+        .card-weather {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            text-align: center;
+            padding: 13px 18px !important;
+        }
+
+        .card-menu {
+            grid-column: 3 / 4;
+            grid-row: 1 / 2;
+        }
+
+        .card-tasks {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+        }
+
+        .card-chores {
+            grid-column: 3 / 4;
+            grid-row: 2 / 3;
+        }
+
+        .card-upcoming {
+            grid-column: 1 / 4;
+            grid-row: 3 / 4;
+            margin-top: 5px;
         }
 
         /* Increase size for Today's Schedule events */
@@ -142,18 +170,6 @@
             vertical-align: middle !important;
         }
 
-        .card-chores {
-            grid-column: 2 / 3;
-            grid-row: 1 / 2;
-        }
-
-        .card-weather {
-            grid-column: 2 / 3;
-            grid-row: 2 / 3;
-            text-align: center;
-            padding: 13px 18px !important;
-        }
-
         /* Two-Column Weather Card Layout */
         .weather-container {
             display: flex;
@@ -182,22 +198,6 @@
         #calendar-menu .fc-list-event-title, 
         #calendar-menu .fc-list-item {
             font-size: 40px !important; 
-        }
-
-        .card-tasks {
-            grid-column: 3 / 4;
-            grid-row: 1 / 2;
-        }
-
-        .card-menu {
-            grid-column: 3 / 4;
-            grid-row: 2 / 3;
-        }
-
-        .card-upcoming {
-            grid-column: 1 / 4;
-            grid-row: 3 / 4;
-            margin-top: 5px;
         }
         
         /* Task & Chore Lists: Two Columns */
@@ -238,7 +238,7 @@
             font-family: 'Amatica SC', sans-serif;
         }
         .fc-list-event-title, .fc-event-title {
-            font-size: 32px;
+            font-size: 40px;
         }
         .fc-list-day-cushion {
             background-color: rgba(24, 61, 30, 0.1) !important;
@@ -311,7 +311,7 @@
             <div id="calendar-today"></div>
         </div>
 
-        <!-- Top-Right: Weather -->
+        <!-- Top-Left of Right Block: Weather -->
         <div class="card card-weather">
             <h2>Weather</h2>
             <div id="weather-widget">
@@ -319,15 +319,13 @@
             </div>
         </div>
 
-        <!-- Middle-Center: Chores -->
-        <div class="card card-chores">
-            <h2>Today's Chores</h2>
-            <ul class="chores-list" id="chores-list">
-                <li class="task-item">Loading chores...</li>
-            </ul>
+        <!-- Top-Right of Right Block: Tonight's Menu -->
+        <div class="card card-menu">
+            <h2>Tonight's Menu</h2>
+            <div id="calendar-menu"></div>
         </div>
 
-        <!-- Middle-Right: To Do -->
+        <!-- Bottom-Left of Right Block: To Do -->
         <div class="card card-tasks">
             <h2>To Do</h2>
             <ul class="task-list" id="todo-list">
@@ -335,10 +333,12 @@
             </ul>
         </div>
 
-        <!-- Bottom-Right: Menu -->
-        <div class="card card-menu">
-            <h2>Tonight's Menu</h2>
-            <div id="calendar-menu"></div>
+        <!-- Bottom-Right of Right Block: Chores -->
+        <div class="card card-chores">
+            <h2>Today's Chores</h2>
+            <ul class="chores-list" id="chores-list">
+                <li class="task-item">Loading chores...</li>
+            </ul>
         </div>
 
         <!-- Full-Width Bottom Strip: Next 7 Days -->
