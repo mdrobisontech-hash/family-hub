@@ -364,6 +364,12 @@
             const lat = '43.4918'; 
             const lon = '-116.4201'; 
 
+            // Weather & Air Quality Function (Updates silently in the background)
+        const weatherApiKey = 'd30ad5698b761df2e8aa71f1cd86a4ce';
+        const lat = '43.4918'; 
+        const lon = '-116.4201'; 
+
+        function updateWeather() {
             Promise.all([
                 fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${weatherApiKey}`).then(res => res.json()),
                 fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=us_aqi`).then(res => res.json())
@@ -379,15 +385,17 @@
                             <div>Humidity: ${weatherData.main.humidity}%</div>
                             <div>Wind: ${Math.round(weatherData.wind.speed)} mph | AQI: ${usAqi}</div>
                         </div>
-                        </div>
                     </div>
                 `;
             })
             .catch(err => {
-                document.getElementById('weather-widget').innerHTML = '<p>Weather unavailable</p>';
                 console.log('Weather/AQI fetch error:', err);
+                // Keeps displaying the last known temperature instead of showing an error message
             });
+        }
 
+        // Run weather fetch immediately on load
+        updateWeather();
             // Your Google Apps Script Web App URL
             const webAppUrl = 'https://script.google.com/macros/s/AKfycbxTiZjej-RA7nje7-UnxUNDtZ_uexou-c56DQ10sFKZQHmU0VrK5u2QhDvvTwCoRmCq/exec';
 
@@ -479,19 +487,24 @@
             }
 
             // Background Auto-Refresh every 5 minutes (300,000 milliseconds)
-            setInterval(function() {
-                fetch(`${webAppUrl}?type=tasks`)
-                    .then(response => response.json())
-                    .then(data => {
-                        renderTasks('chores-list', data.chores);
-                        renderTasks('todo-list', data.tasks);
-                    })
-                    .catch(err => console.log('Background task refresh failed:', err));
+        setInterval(function() {
+            // 1. Refresh Weather & AQI
+            updateWeather();
 
-                if (typeof calToday !== 'undefined') calToday.refetchEvents();
-                if (typeof calUpcoming !== 'undefined') calUpcoming.refetchEvents();
-                if (typeof calMenu !== 'undefined') calMenu.refetchEvents();
-            }, 300000);
+            // 2. Refresh Tasks & Chores
+            fetch(`${webAppUrl}?type=tasks`)
+                .then(response => response.json())
+                .then(data => {
+                    renderTasks('chores-list', data.chores);
+                    renderTasks('todo-list', data.tasks);
+                })
+                .catch(err => console.log('Background task refresh failed:', err));
+
+            // 3. Refresh Calendars
+            if (typeof calToday !== 'undefined') calToday.refetchEvents();
+            if (typeof calUpcoming !== 'undefined') calUpcoming.refetchEvents();
+            if (typeof calMenu !== 'undefined') calMenu.refetchEvents();
+        }, 300000);
         });
     </script>
 </body>
