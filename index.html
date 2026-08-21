@@ -359,6 +359,26 @@
             }
             updateDate();
 
+            // Auto-reload the page once every night at 3:00 AM
+            function scheduleNightlyReload() {
+                const now = new Date();
+                const targetTime = new Date();
+                targetTime.setHours(3, 0, 0, 0); // 3:00 AM
+
+                // If it's already past 3:00 AM today, set the target for tomorrow morning
+                if (now > targetTime) {
+                    targetTime.setDate(targetTime.getDate() + 1);
+                }
+
+                const timeUntilReload = targetTime - now;
+                setTimeout(function() {
+                    location.reload();
+                }, timeUntilReload);
+            }
+            
+            // Run the nightly reload timer
+            scheduleNightlyReload();
+            
             // Weather & Air Quality Constants & Function
             const weatherApiKey = 'd30ad5698b761df2e8aa71f1cd86a4ce';
             const lat = '43.4918'; 
