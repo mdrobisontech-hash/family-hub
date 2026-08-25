@@ -372,7 +372,8 @@
 
                 const timeUntilReload = targetTime - now;
                 setTimeout(function() {
-                    location.reload();
+                    // Forces a hard reload from the server, bypassing cache
+                    window.location.href = window.location.pathname + '?reload=' + new Date().getTime();
                 }, timeUntilReload);
             }
             
@@ -416,7 +417,7 @@
 
             const familyEventSources = [
                 //Marie
-                { url: `${webAppUrl}?type=calendar&calId=1cb9bcf8bd82c7503ec7f910d83ff2d06aa9ed95580e97d8b0aae5ec50af3e9c@group.calendar.google.com&color=%23183D1E` },
+                { url: `${webAppUrl}?type=calendar&calId=1cb9bcf8bd82c7503ec7f910d83ff2d06aa9ed95580e97d8b0aae5ec50af3e9c@group.calendar.google.com&color=%23e9905a` },
                 { url: `${webAppUrl}?type=calendar&calId=mariedtharp@gmail.com&color=%23e9905a` },
                 //David
                 { url: `${webAppUrl}?type=calendar&calId=mrdavidrobison@gmail.com&color=%23c7cdd6` },
