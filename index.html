@@ -59,7 +59,7 @@
         /* Widescreen Island Grid Layout */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr;
+            grid-template-columns: 1.25fr 1.1fr 1.1fr;
             grid-template-rows: auto auto auto;
             gap: 10px;
             width: 100%;
@@ -174,15 +174,25 @@
         .weather-container {
             display: flex;
             align-items: center;
-            justify-content: space-around;
+            justify-content: space-between;
             height: 100%;
             min-height: 125px;
+            padding: 0 5px;
         }
 
-        .weather-temp {
-            font-size: 85px;
+        .weather-temp-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.05;
             font-weight: bold;
-            line-height: 1;
+            min-width: 110px;
+        }
+
+        .weather-temp-val {
+            font-size: 85px;
+            color: var(--primary-dark);
         }
 
         .weather-details {
@@ -394,10 +404,13 @@
                     const usAqi = aqiData.current ? aqiData.current.us_aqi : "N/A";
                     const tempLow = Math.round(weatherData.main.temp_min);
                     const tempHigh = Math.round(weatherData.main.temp_max);
-            
+    
                     document.getElementById('weather-widget').innerHTML = `
                         <div class="weather-container">
-                            <div class="weather-temp">${tempLow}° / ${tempHigh}°</div>
+                            <div class="weather-temp-stack">
+                                <div class="weather-temp-val">${tempLow}°</div>
+                                <div class="weather-temp-val">${tempHigh}°</div>
+                            </div>
                             <div class="weather-details">
                                 <div>${weatherData.weather[0].description}</div>
                                 <div>Humidity: ${weatherData.main.humidity}%</div>
