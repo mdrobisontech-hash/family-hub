@@ -185,14 +185,22 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            line-height: 1.05;
+            line-height: 1.0;
             font-weight: bold;
-            min-width: 110px;
+            padding-right: 15px;
         }
 
         .weather-temp-val {
-            font-size: 85px;
+            font-size: 125px;
             color: var(--primary-dark);
+            letter-spacing: -2px;
+        }
+
+        .weather-temp-divider {
+            width: 85%;
+            height: 3px;
+            background-color: rgba(24, 61, 30, 0.35);
+            margin: 6px 0;
         }
 
         .weather-details {
@@ -409,6 +417,7 @@
                         <div class="weather-container">
                             <div class="weather-temp-stack">
                                 <div class="weather-temp-val">${tempLow}°</div>
+                                <div class="weather-temp-divider"></div>
                                 <div class="weather-temp-val">${tempHigh}°</div>
                             </div>
                             <div class="weather-details">
