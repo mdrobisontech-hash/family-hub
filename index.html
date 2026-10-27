@@ -274,6 +274,18 @@
             border: none !important;
         }
 
+        /* FIX: Elegantly collapse empty calendar lists (like an empty menu) */
+        #calendar-menu .fc-list-empty {
+            display: none !important;
+        }
+        
+        /* When there are no menu events, hide the wrapper table body so it doesn't leave blank padding */
+        #calendar-menu:has(.fc-list-empty) .fc-scroller {
+            height: 0px !important;
+            min-height: 0px !important;
+            overflow: hidden !important;
+        }
+
         /* Upcoming Week Layout & Stacking */
         .card-upcoming .fc, 
         .card-upcoming .fc-view-harness, 
@@ -293,7 +305,7 @@
             margin-bottom: 2px !important;
         }
 
-        .card-upcoming .fc-daygrid-day-events {
+        .card-upcoming .fc-daygrid-event-day-events {
             position: relative !important;
             display: flex !important;
             flex-direction: column !important;
