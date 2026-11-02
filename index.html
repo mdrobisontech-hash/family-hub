@@ -442,14 +442,35 @@
 
             function updateWeather() {
                 Promise.all([
-                    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${weatherApiKey}`).then(res => res.json()),
+                    // Switched from /weather to /forecast to get the day's full range of temps
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${weatherApiKey}`).then(res => res.json()),
                     fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=us_aqi`).then(res => res.json())
                 ])
-                .then(([weatherData, aqiData]) => {
+                .then(([forecastData, aqiData]) => {
                     const usAqi = aqiData.current ? aqiData.current.us_aqi : "N/A";
-                    const tempLow = Math.round(weatherData.main.temp_min);
-                    const tempHigh = Math.round(weatherData.main.temp_max);
-    
+                    
+                    // Get current weather description and humidity from the first forecast item (closest to now)
+                    const currentItem = forecastData.list[0];
+                    const currentWeatherDesc = currentItem.weather[0].description;
+                    const currentHumidity = currentItem.main.humidity;
+                    const currentWindSpeed = Math.round(currentItem.wind.speed);
+        
+                    // Filter forecast list for today's date to find the true daily low and high
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    const todaysForecasts = forecastData.list.filter(item => item.dt_txt.startsWith(todayStr));
+        
+                    let tempLow, tempHigh;
+                    if (todaysForecasts.length > 0) {
+                        const mins = todaysForecasts.map(item => item.main.temp_min);
+                        const maxs = todaysForecasts.map(item => item.main.temp_max);
+                        tempLow = Math.round(Math.min(...mins));
+                        tempHigh = Math.round(Math.max(...maxs));
+                    } else {
+                        // Fallback if today's date boundary is tricky
+                        tempLow = Math.round(currentItem.main.temp_min);
+                        tempHigh = Math.round(currentItem.main.temp_max);
+                    }
+        
                     document.getElementById('weather-widget').innerHTML = `
                         <div class="weather-container">
                             <div class="weather-temp-stack">
@@ -458,9 +479,9 @@
                                 <div class="weather-temp-val">${tempHigh}°</div>
                             </div>
                             <div class="weather-details">
-                                <div>${weatherData.weather[0].description}</div>
-                                <div>Humidity: ${weatherData.main.humidity}%</div>
-                                <div>Wind: ${Math.round(weatherData.wind.speed)} mph</div>
+                                <div>${currentWeatherDesc}</div>
+                                <div>Humidity: ${currentHumidity}%</div>
+                                <div>Wind: ${currentWindSpeed} mph</div>
                                 <div>AQI: ${usAqi}</div>
                             </div>
                         </div>
@@ -470,7 +491,6 @@
                     console.log('Weather/AQI fetch error:', err);
                 });
             }
-
             // Run weather fetch immediately on load
             updateWeather();
 
