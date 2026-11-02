@@ -107,17 +107,25 @@
             padding-bottom: 4px;
         }
 
-        /* Island Mapping (Weather & Menu Top, To Do & Chores Bottom) */
+        /* Island Mapping Reordered */
         .card-today {
             grid-column: 1 / 2;
             grid-row: 1 / 3;
         }
 
-        .card-menu {
+        /* To Do moves to the top of the middle column */
+        .card-tasks {
             grid-column: 2 / 3;
             grid-row: 1 / 2;
         }
-        
+
+        /* Today's Chores moves to the bottom of the middle column */
+        .card-chores {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+        }
+
+        /* Weather stays at the top of the right column */
         .card-weather {
             grid-column: 3 / 4;
             grid-row: 1 / 2;
@@ -125,12 +133,8 @@
             padding: 13px 18px !important;
         }
 
-        .card-tasks {
-            grid-column: 2 / 3;
-            grid-row: 2 / 3;
-        }
-
-        .card-chores {
+        /* Tonight's Menu moves below the weather on the right */
+        .card-menu {
             grid-column: 3 / 4;
             grid-row: 2 / 3;
         }
@@ -140,7 +144,6 @@
             grid-row: 3 / 4;
             margin-top: 5px;
         }
-
         /* Pack the Today's Schedule time columns tightly together */
         #calendar-today .fc-list-table {
             width: auto !important; /* Let it size naturally based on content rather than forcing 100% stretch */
@@ -457,7 +460,8 @@
                             <div class="weather-details">
                                 <div>${weatherData.weather[0].description}</div>
                                 <div>Humidity: ${weatherData.main.humidity}%</div>
-                                <div>Wind: ${Math.round(weatherData.wind.speed)} mph | AQI: ${usAqi}</div>
+                                <div>Wind: ${Math.round(weatherData.wind.speed)} mph</div>
+                                <div>AQI: ${usAqi}</div>
                             </div>
                         </div>
                     `;
