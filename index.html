@@ -141,7 +141,7 @@
             margin-top: 5px;
         }
 
-        /* Constrain Today's Schedule to its grid column and enable wrapping */
+        /* Give Today's Schedule a balanced column constraint and enable wrapping */
         #calendar-today .fc-list-table {
             table-layout: fixed !important;
             width: 100% !important;
@@ -151,17 +151,17 @@
             font-size: 70px !important; 
             letter-spacing: -2px !important;
             padding-right: 15px !important;
-            white-space: nowrap !important; /* Keeps the time on a single line */
-            width: 270px !important;        /* Fixed width bucket for the time column */
+            white-space: nowrap !important;
+            width: 320px !important;        /* Slightly wider time/dash area to prevent early wrapping */
         }
 
         #calendar-today .fc-list-event-title {
             font-size: 70px !important; 
             letter-spacing: -2px !important;
-            white-space: normal !important;  /* Allows long titles to wrap to the next line */
+            white-space: normal !important;  
             word-break: break-word !important;
         }
-
+        
         #calendar-today .fc-list-event-time .fc-list-event-time-text {
             margin: 0 !important;
         }
